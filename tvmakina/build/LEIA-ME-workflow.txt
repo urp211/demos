@@ -1,30 +1,30 @@
-COMPILAR O EXE PELO GITHUB ACTIONS
-==================================
+COMPILAR O TVmakina PARA WINDOWS COM O GITHUB ACTIONS
+=====================================================
 
-O ficheiro deste directório
+O workflow que compila o TVmakina (instalador + versao portatil, 64 e 32 bits)
+esta guardado aqui:
 
     tvmakina/build/tvmakina-windows.yml
 
-e o workflow que compila o TVmakina para Windows (instalador + portatil,
-64 e 32 bits).
-
-Ele NAO esta activo aqui de propósito: o GitHub nao deixa uma aplicacao
-ligada por OAuth criar ou alterar ficheiros em .github/workflows/.
-Tem de o colocar lá você, uma única vez.
+Ele NAO esta em .github/workflows/ de proposito: o GitHub recusa pushes que
+criem ou alterem ficheiros em .github/workflows/ quando a ligacao e feita por
+uma aplicacao OAuth (e exactamente o caso deste ambiente de trabalho). Por isso
+o ficheiro tem de ser colocado la por si, uma unica vez.
 
 
-COMO ACTIVAR (2 minutos)
-------------------------
-Opcao 1 - pelo site do GitHub:
-  1. Abra o seu repositorio no GitHub.
+ACTIVAR (2 minutos, uma vez so)
+-------------------------------
+Opcao 1 - pelo site do GitHub
+  1. Abra o repositorio no GitHub.
   2. "Add file" > "Create new file".
-  3. No nome escreva exactamente:
-         .github/workflows/tvmakina-windows.yml
-     (o GitHub cria as pastas sozinho quando escreve as barras)
-  4. Copie para dentro o conteudo de tvmakina/build/tvmakina-windows.yml.
+  3. No campo do nome escreva exactamente:
+        .github/workflows/tvmakina-windows.yml
+     (ao escrever as barras o GitHub cria as pastas sozinho)
+  4. Cole o conteudo de tvmakina/build/tvmakina-windows.yml.
   5. "Commit changes".
 
-Opcao 2 - pelo git, no seu PC:
+Opcao 2 - pelo git no seu PC
+     cd demos
      mkdir -p .github/workflows
      cp tvmakina/build/tvmakina-windows.yml .github/workflows/
      git add .github/workflows/tvmakina-windows.yml
@@ -32,13 +32,26 @@ Opcao 2 - pelo git, no seu PC:
      git push
 
 
-COMO USAR
----------
-  GitHub > separador Actions > "Compilar TVmakina" > "Run workflow".
+USAR
+----
+  GitHub > separador Actions > "Compilar TVmakina" > "Run workflow"
 
   No fim, em Artifacts:
-    TVmakina-Windows7   -> os EXE (instalador e portatil, x64 e ia32)
-    TVmakina-browser    -> dist/TVmakina.html e dist/TVmakina-completo.html
+    TVmakina-Windows7  ->  TVmakina-Setup-1.0.0-x64.exe
+                           TVmakina-Setup-1.0.0-ia32.exe
+                           TVmakina-Portatil-1.0.0-x64.exe
+                           TVmakina-Portatil-1.0.0-ia32.exe
+    TVmakina-browser   ->  dist/TVmakina.html
+                           dist/TVmakina-completo.html
 
-O workflow tambem corre sozinho sempre que houver um push que mexa em
-tvmakina/**, e faz primeiro a verificacao (ES5 + 56 testes) antes de compilar.
+O workflow faz primeiro a verificacao (ES5 + 56 testes + ficheiro unico) num
+runner Linux, e so depois compila os EXE num runner windows-2022.
+
+
+SE PREFERIR NAO USAR O GITHUB
+-----------------------------
+Num PC com Node.js: duplo clique em tvmakina/BUILD-WINDOWS.bat.
+Faz exactamente o mesmo, mas localmente.
+
+E se nao quiser compilar nada: use tvmakina/dist/TVmakina-completo.html,
+que abre com duplo clique no browser e nao precisa de instalacao.
