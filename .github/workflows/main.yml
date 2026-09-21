@@ -1,0 +1,39 @@
+
+name: Build Signal TV for Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Windows EXE
+    runs-on: windows-latest
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vite application
+        run: npm run build
+
+      - name: Build Windows application
+        run: npx electron-builder --win --x64 --publish never
+
+      - name: Upload Windows EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: signal-tv-windows-build
+          path: |
+            dist/*.exe
+            release/*.exe
+            dist/**/*.exe
+          if-no-files-found: error
