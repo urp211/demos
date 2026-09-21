@@ -1,0 +1,13 @@
+# Dependencias e saidas de compilacao
+node_modules/
+release/
+tvmakina/package-lock.json
+
+# O dist/ do TVmakina FICA no repositorio de proposito: sao os dois ficheiros
+# HTML que o utilizador final copia para o PC fraco (nao precisa de Node.js).
+# Regenere com: cd tvmakina && npm run build
+
+# sistema
+.DS_Store
+Thumbs.db
+*.log

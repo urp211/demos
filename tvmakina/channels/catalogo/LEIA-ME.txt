@@ -1,0 +1,37 @@
+CATALOGOS PUBLICOS iptv-org
+===========================
+
+Origem : https://github.com/iptv-org/iptv  (ramo "master", ficheiros streams/<pais>.m3u)
+Licenca: The Unlicense (dominio publico), conforme o repositorio de origem
+Data   : copia obtida a 2026-09-21
+
+  pt.m3u  - Portugal
+  br.m3u  - Brasil
+  ao.m3u  - Angola
+  mz.m3u  - Mocambique
+  cv.m3u  - Cabo Verde
+  es.m3u  - Espanha
+  fr.m3u  - Franca
+
+O que isto e
+------------
+Sao listas de canais de sinal aberto mantidas pela comunidade. O TVmakina
+nao as criou, nao as aloja e nao as verifica. Um endereco pode estar
+offline, geo-bloqueado ou ter sido retirado do ar a qualquer momento.
+
+O que isto NAO e
+----------------
+Nao ha aqui canais pagos, nem listas privadas, nem conteudo pirateado.
+Se precisar de canais por assinatura, use a lista oficial do SEU operador
+e apenas se tiver autorizacao para a usar.
+
+Como usar no TVmakina
+---------------------
+1. Abra o TVmakina.
+2. Botao "Importar canais".
+3. Em "Exemplos incluidos" escolha o catalogo (por exemplo "Catalogo PT").
+   Ou, no campo do endereco, escreva:  channels/catalogo/pt.m3u
+4. Os canais ficam guardados no proprio computador (localStorage).
+
+Para actualizar, volte a descarregar o ficheiro do repositorio iptv-org
+e substitua-o nesta pasta.

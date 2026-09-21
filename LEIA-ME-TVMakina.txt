@@ -1,0 +1,66 @@
+TVMakina - COMECAR AQUI
+=======================
+
+Ha agora DOIS projectos neste repositorio:
+
+  Signal TV  (na raiz)   - React 19 + Electron 38. Precisa de Windows 10.
+  TVmakina   (tvmakina/) - feito de raiz para PC fraco:
+                           Windows 7, 3 GB de RAM, Intel Core 2 Duo 2.20 GHz.
+
+As funcoes sao as mesmas: listas M3U/M3U8, HLS, multicast UDP da rede local,
+ficheiros locais, sinais de teste e gravacao.
+
+
+O CAMINHO MAIS RAPIDO (nao precisa de instalar nada)
+----------------------------------------------------
+1. Va a pasta tvmakina/dist/
+2. Copie "TVmakina-completo.html" para uma pen USB.
+3. No PC com Windows 7, abra esse ficheiro com o Firefox 115 ESR
+   (ou o Chrome 109). Pronto: esta a funcionar.
+
+Se a pasta dist/ nao existir, gere-a com:
+   cd tvmakina
+   npm run build
+
+
+O EXE PARA WINDOWS
+------------------
+Os EXE sao compilados nos servidores do GitHub (o seu PC nao precisa de
+Node.js).
+
+Primeiro, UMA VEZ SO: copie o ficheiro
+   tvmakina/build/tvmakina-windows.yml
+para
+   .github/workflows/tvmakina-windows.yml
+e faca commit. (O GitHub nao deixa uma aplicacao ligada por OAuth criar
+ficheiros nessa pasta - por isso ele vem guardado ao lado. Instrucoes em
+tvmakina/build/LEIA-ME-workflow.txt.)
+
+Depois:
+  GitHub > separador Actions > "Compilar TVmakina" > Run workflow
+  No fim, em Artifacts, baixe "TVmakina-Windows7".
+
+Vem com:
+  TVmakina-Setup-1.0.0-x64.exe     instalador, Windows 64 bits
+  TVmakina-Setup-1.0.0-ia32.exe    instalador, Windows 32 bits
+  TVmakina-Portatil-1.0.0-*.exe    versao portatil (nao instala nada)
+
+Com 3 GB de RAM o Windows 7 e provavelmente de 32 bits: use os "ia32".
+
+
+CANAIS MULTICAST DA REDE LOCAL (udp://@239.x.x.x)
+-------------------------------------------------
+Um browser nao consegue receber UDP. Por isso o TVmakina traz um proxy:
+
+   cd tvmakina
+   node server\proxy.js
+
+Fica em http://127.0.0.1:4022/ e tambem serve a pagina do TVmakina.
+E compativel com o udpxy: se ja tiver um, indique o endereco dele em
+Definicoes > Proxy UDP local.
+
+
+GUIA COMPLETO
+-------------
+tvmakina/docs/Windows7-Guia.md   - instalacao, ajustes, resolucao de problemas
+tvmakina/README.md               - o que e, como esta feito, como compilar

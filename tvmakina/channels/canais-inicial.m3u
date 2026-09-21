@@ -1,0 +1,93 @@
+#EXTM3U
+#
+# TVmakina - lista de arranque (exemplo)
+# -------------------------------------
+# Os primeiros canais sao SINAIS DE TESTE gerados pelo proprio TVmakina:
+# funcionam SEM rede, SEM internet e SEM descodificadores. Servem para
+# confirmar que o video, o som e a interface estao a funcionar neste PC.
+#
+# Os canais seguintes sao emissores de sinal aberto / servico publico cujos
+# enderecos foram retirados do catalogo publico iptv-org
+# (https://github.com/iptv-org/iptv, dominio publico / Unlicense).
+# NAO foram testados a partir desta maquina de compilacao: um canal pode
+# estar offline, geo-bloqueado ou ter mudado de endereco. Se um falhar,
+# o TVmakina passa automaticamente ao seguinte (definicoes > "auto-seguinte").
+#
+# O TVmakina nao distribui canais pagos nem conteudo protegido.
+# Importe apenas listas que tem autorizacao para usar.
+#
+
+# ------------------------------------------------------------------ testes
+#EXTINF:-1 tvg-id="tvmakina.smpte" group-title="Testes (sem rede)",Sinal de teste SMPTE
+test:smpte
+#EXTINF:-1 tvg-id="tvmakina.barras" group-title="Testes (sem rede)",Barras de cor
+test:barras
+#EXTINF:-1 tvg-id="tvmakina.ruido" group-title="Testes (sem rede)",Ruido (prova de CPU)
+test:ruido
+#EXTINF:-1 tvg-id="tvmakina.relogio" group-title="Testes (sem rede)",Relogio
+test:relogio
+
+# ------------------------------------------------------------------ Portugal
+#EXTINF:-1 tvg-id="RTP1.pt@HD" group-title="Portugal",RTP 1
+https://streaming-live.rtp.pt/liverepeater/rtp1HD.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="RTP2.pt@HD" group-title="Portugal",RTP 2
+https://streaming-live.rtp.pt/liverepeater/rtp2HD.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="RTPNoticias.pt@HD" group-title="Portugal",RTP Noticias
+https://streaming-live.rtp.pt/livetvhlsDVR/rtpnHDdvr.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="RTPMemoria.pt@SD" group-title="Portugal",RTP Memoria
+https://streaming-live.rtp.pt/liverepeater/smil:rtpmem.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="RTPMadeira.pt@SD" group-title="Portugal",RTP Madeira
+https://streaming-live.rtp.pt/liverepeater/smil:rtpmadeira.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="RTPAcores.pt@SD" group-title="Portugal",RTP Acores
+https://streaming-live.rtp.pt/liverepeater/smil:rtpacores.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="SIC.pt@SD" group-title="Portugal",SIC
+https://sic.live.impresa.pt/sic.m3u8
+#EXTINF:-1 tvg-id="SICNoticias.pt@SD" group-title="Portugal",SIC Noticias
+https://sicnot.live.impresa.pt/sicnot.m3u8
+#EXTINF:-1 tvg-id="ARTV.pt@SD" group-title="Portugal",ARTV Canal Parlamento
+https://playout172.livextend.cloud/liveiframe/_definst_/liveartvabr/playlist.m3u8
+#EXTINF:-1 tvg-id="PortoCanal.pt@SD" group-title="Portugal",Porto Canal
+https://pull-live-156-1.global.ssl.fastly.net/pc5865dc25400thmb-ea6bf03b14fa318f7133/smil:pc1-jhrgyuoqe5865db-b6c8e0b0/playlist.m3u8
+#EXTINF:-1 tvg-id="KuriakosTV.pt@SD" group-title="Portugal",Kuriakos TV
+https://w1.manasat.com/ktv/smil:ktv.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="TVMana1.pt@SD" group-title="Portugal",TV Mana 1
+https://w1.manasat.com/tvmana-1/smil:tvmana-1.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="TVMana2.pt@SD" group-title="Portugal",TV Mana 2
+https://w1.manasat.com/tvmana-2/smil:tvmana-2.smil/playlist.m3u8
+
+# ------------------------------------------------------------------ Brasil
+#EXTINF:-1 tvg-id="TVBrasil.br@SD" group-title="Brasil",TV Brasil (EBC)
+https://tvbrasil-stream.ebc.com.br/index.m3u8
+#EXTINF:-1 tvg-id="TVCamara.br@SD" group-title="Brasil",TV Camara
+https://stream3.camara.gov.br/tv1/manifest.m3u8
+#EXTINF:-1 tvg-id="TVCamara2.br@SD" group-title="Brasil",TV Camara 2
+https://stream3.camara.gov.br/tv2/manifest.m3u8
+#EXTINF:-1 tvg-id="TVCultura.br@SD" group-title="Brasil",TV Cultura
+https://cdn-5.nxplay.com.br/TV_CULTURA/index.m3u8
+#EXTINF:-1 tvg-id="CanalSaude.br@SD" group-title="Brasil",Canal Saude (Fiocruz)
+https://arkyvbre1g.zoeweb.tv/fiocruz/fiocruz.stream/playlist.m3u8
+#EXTINF:-1 tvg-id="TVAparecida.br@SD" group-title="Brasil",TV Aparecida
+https://cdn.jmvstream.com/w/LVW-9716/LVW9716_HbtQtezcaw/playlist.m3u8
+#EXTINF:-1 tvg-id="RedeMinas.br@SD" group-title="Brasil",Rede Minas
+https://8hzcavccys.zoeweb.tv/redeminas/ngrp:redeminas_all/playlist.m3u8
+#EXTINF:-1 tvg-id="TVBrasilOeste.br@SD" group-title="Brasil",TV Brasil Oeste
+https://5ad482a77183d.streamlock.net/operacaotbomt.com/operacaotbomt.com/playlist.m3u8
+
+# ------------------------------------------------------------------ PALOP
+#EXTINF:-1 tvg-id="TVManaMocambique.mz@SD" group-title="PALOP",TV Mana Mocambique
+https://w2.manasat.com/tvmana-mz/smil:tvmana-mz.smil/playlist.m3u8
+
+# ------------------------------------------------------------------ multicast UDP
+# Estes canais so funcionam com o proxy local ligado (node server/proxy.js)
+# e com um fornecedor que emita em multicast na sua rede. Substitua os
+# endereços pelos do seu operador (ex.: Meo/MEO Fibra, Vodafone, operadoras locais).
+#EXTINF:-1 tvg-id="exemplo.udp1" group-title="Multicast UDP (precisa do proxy)",Exemplo UDP 239.1.1.1:1234
+udp://@239.1.1.1:1234
+#EXTINF:-1 tvg-id="exemplo.udp2" group-title="Multicast UDP (precisa do proxy)",Exemplo UDP 232.0.0.1:5000 com interface
+udp://@232.0.0.1:5000?interface=192.168.1.10
+
+# ------------------------------------------------------------------ ficheiros locais
+# O TVmakina tambem toca ficheiros do proprio computador. Exemplos (descomente
+# e ajuste o caminho; no Windows use barras para a frente):
+#EXTINF:-1 group-title="Ficheiros locais",Exemplo de ficheiro local
+file:///C:/Videos/exemplo.mp4

@@ -1,0 +1,90 @@
+name: Compilar TVmakina
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tvmakina/**'
+      - '.github/workflows/tvmakina-windows.yml'
+
+defaults:
+  run:
+    working-directory: tvmakina
+
+jobs:
+  # ------------------------------------------------------------- verificacao
+  verificar:
+    name: Verificar (ES5 + testes + ficheiro unico)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tvmakina/package-lock.json
+
+      - name: Instalar dependencias de verificacao
+        run: npm install --no-audit --no-fund acorn@^8.15.0 jsdom@^24.1.3
+
+      - name: Confirmar que o codigo continua em ES5
+        run: npm run check
+
+      - name: Correr os testes
+        run: npm test
+
+      - name: Gerar os icones e o ficheiro unico
+        run: |
+          npm run icons
+          npm run build
+          ls -l dist icons
+
+      - name: Publicar a versao de browser
+        uses: actions/upload-artifact@v4
+        with:
+          name: TVmakina-browser
+          path: |
+            tvmakina/dist/TVmakina.html
+            tvmakina/dist/TVmakina-completo.html
+          if-no-files-found: error
+
+  # ------------------------------------------------------- aplicacao Windows
+  windows:
+    name: EXE para Windows 7 (x64 + 32 bits)
+    needs: verificar
+    # windows-2022 e o runner mais recente que o electron-builder 24 suporta bem.
+    # O instalador NSIS gerado aceita Windows 7 ou superior (so bloqueia <= Vista).
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # O binario do Electron e descarregado pelo electron-builder, nao pelo npm.
+      - name: Instalar o electron-builder
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+        run: npm install --no-save --no-audit --no-fund electron@22.3.27 electron-builder@24.13.3
+
+      - name: Gerar o ficheiro unico e os icones
+        run: |
+          npm run icons
+          npm run build
+
+      - name: Compilar instalador (NSIS) e versao portatil
+        run: npx electron-builder --win nsis portable --x64 --ia32 --publish never
+
+      - name: Mostrar o que foi gerado
+        shell: pwsh
+        run: Get-ChildItem -Recurse release | Select-Object FullName, Length
+
+      - name: Publicar os EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: TVmakina-Windows7
+          path: |
+            tvmakina/release/*.exe
+          if-no-files-found: error

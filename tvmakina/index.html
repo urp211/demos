@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#05070d" />
+    <meta name="description" content="TVmakina - leitor IPTV leve para Windows 7 e PCs fracos: listas M3U/M3U8, HLS, multicast UDP via proxy local, ficheiros locais, sinais de teste e gravacao." />
+    <meta name="application-name" content="TVmakina" />
+    <title>TVmakina · IPTV leve para Windows 7</title>
+    <link rel="icon" href="icons/icon-64.png" />
+    <link rel="stylesheet" href="styles/tvmakina.css" />
+  </head>
+  <body>
+    <div id="app">
+
+      <header id="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">TVmakina</span>
+          <span class="brand-sub" id="brand-sub">IPTV leve</span>
+        </div>
+        <div class="top-actions">
+          <span id="machine-info" class="machine" title="Informacao desta maquina">a analisar a maquina&hellip;</span>
+          <button type="button" id="btn-proxy" class="btn btn-ghost" title="Estado do proxy UDP local">Proxy: --</button>
+          <button type="button" id="btn-perf" class="btn btn-ghost" title="Desempenho">0 fps</button>
+          <button type="button" id="btn-lowend" class="btn btn-ghost" title="Modo leve para PCs fracos">Modo leve</button>
+          <button type="button" id="btn-settings" class="btn">Definicoes</button>
+          <button type="button" id="btn-import" class="btn btn-primary">Importar canais</button>
+        </div>
+      </header>
+
+      <div id="main">
+        <aside id="sidebar">
+          <div class="side-head">
+            <input type="text" id="search" placeholder="Procurar canal  ( / )" autocomplete="off" />
+            <div class="side-row">
+              <select id="group-filter" title="Grupo"><option value="">Todos os grupos</option></select>
+              <label class="chk" title="Mostrar apenas favoritos"><input type="checkbox" id="only-fav" /> Fav.</label>
+              <label class="chk" title="Esconder canais com protocolo nao suportado"><input type="checkbox" id="only-playable" checked /> OK</label>
+            </div>
+            <div class="side-row side-count">
+              <span id="count-info">0 canais</span>
+              <span class="spacer"></span>
+              <a href="#" id="link-fav" class="mini">Favoritos</a>
+              <a href="#" id="link-history" class="mini">Recentes</a>
+            </div>
+          </div>
+          <div id="list-wrap">
+            <div id="list" role="listbox" aria-label="Canais"></div>
+            <div id="list-empty" class="empty hidden">
+              <p><strong>Sem canais carregados.</strong></p>
+              <p>Clique em <em>Importar canais</em> para carregar uma lista M3U/M3U8, ou comece pelo sinal de teste.</p>
+              <button type="button" id="btn-empty-import" class="btn btn-primary">Importar canais</button>
+              <button type="button" id="btn-empty-test" class="btn">Sinal de teste</button>
+              <p class="tiny">Exemplos incluidos: <code>channels/canais-inicial.m3u</code></p>
+            </div>
+          </div>
+          <div id="side-foot">
+            <span id="storage-info">--</span>
+          </div>
+        </aside>
+
+        <section id="stage">
+          <div id="player-wrap">
+            <video id="video" playsinline></video>
+            <canvas id="test-canvas" width="640" height="360"></canvas>
+            <div id="player-overlay" class="overlay hidden">
+              <div class="overlay-box">
+                <div id="overlay-title" class="overlay-title">TVmakina</div>
+                <div id="overlay-msg" class="overlay-msg">Escolha um canal</div>
+                <div id="overlay-actions" class="overlay-actions">
+                  <button type="button" id="btn-retry" class="btn hidden">Tentar outra vez</button>
+                  <button type="button" id="btn-next-err" class="btn hidden">Canal seguinte</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="now-bar">
+            <div class="now-text">
+              <span id="now-name">Sem canal</span>
+              <span id="now-meta" class="meta"></span>
+            </div>
+            <div class="now-actions">
+              <button type="button" id="btn-fav" class="btn btn-ghost" title="Favorito (F)">&#9734;</button>
+              <button type="button" id="btn-rec" class="btn btn-ghost" title="Gravar (R)">&#9679; Gravar</button>
+              <button type="button" id="btn-sleep" class="btn btn-ghost" title="Temporizador">Dormir</button>
+            </div>
+          </div>
+
+          <div id="controls">
+            <button type="button" id="btn-prev" class="ctl" title="Canal anterior (Page Up)">&#9664;&#9664;</button>
+            <button type="button" id="btn-play" class="ctl ctl-big" title="Reproduzir / Pausa (Espaco)">&#9654;</button>
+            <button type="button" id="btn-next" class="ctl" title="Canal seguinte (Page Down)">&#9654;&#9654;</button>
+            <button type="button" id="btn-mute" class="ctl" title="Silenciar (M)">&#128266;</button>
+            <input type="range" id="volume" min="0" max="100" step="1" value="100" title="Volume" />
+            <span id="vol-label" class="ctl-label">100%</span>
+            <span class="spacer"></span>
+            <select id="quality" class="ctl-select" title="Limite de qualidade">
+              <option value="0">Qualidade: automatica</option>
+              <option value="400000">Ate ~480p</option>
+              <option value="900000">Ate ~576p</option>
+              <option value="1500000">Ate ~720p</option>
+              <option value="3000000">Ate ~1080p</option>
+            </select>
+            <select id="aspect" class="ctl-select" title="Enquadramento">
+              <option value="contain">Proporcional</option>
+              <option value="cover">Preencher</option>
+              <option value="fill">Esticar</option>
+            </select>
+            <button type="button" id="btn-pip" class="ctl" title="Janela em primeiro plano">PiP</button>
+            <button type="button" id="btn-full" class="ctl" title="Ecra inteiro (F)">&#9974;</button>
+          </div>
+
+          <div id="statusbar">
+            <span id="st-state" class="st">parado</span>
+            <span class="sep"></span>
+            <span id="st-res" class="st">--</span>
+            <span class="sep"></span>
+            <span id="st-bitrate" class="st">-- kb/s</span>
+            <span class="sep"></span>
+            <span id="st-buffer" class="st">buffer --</span>
+            <span class="sep"></span>
+            <span id="st-dropped" class="st">perdas 0</span>
+            <span class="sep"></span>
+            <span id="st-src" class="st">--</span>
+            <span class="spacer"></span>
+            <span id="st-rec" class="st rec hidden">GRAVACAO 00:00</span>
+            <span id="st-clock" class="st">--:--</span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Modais -->
+    <div id="modal-import" class="modal hidden">
+      <div class="modal-box">
+        <div class="modal-head">
+          <span>Importar canais</span>
+          <button type="button" class="btn btn-ghost" data-close="modal-import">Fechar</button>
+        </div>
+        <div class="modal-body">
+          <label class="fld">
+            <span>1. Endereco de uma lista (M3U / M3U8 / XSPF / JSON)</span>
+            <input type="text" id="imp-url" placeholder="http://192.168.1.10:8000/playlist.m3u" />
+          </label>
+          <button type="button" id="imp-url-go" class="btn btn-primary">Carregar do endereco</button>
+
+          <label class="fld">
+            <span>2. Ficheiro no computador</span>
+            <input type="file" id="imp-file" />
+          </label>
+
+          <label class="fld">
+            <span>3. Colar o conteudo da lista</span>
+            <textarea id="imp-text" rows="6" placeholder="#EXTM3U&#10;#EXTINF:-1 group-title=&quot;Geral&quot;,Canal Exemplo&#10;http://exemplo/live.m3u8"></textarea>
+          </label>
+          <button type="button" id="imp-text-go" class="btn btn-primary">Carregar do texto</button>
+
+          <div class="fld">
+            <span>Exemplos incluidos</span>
+            <div id="imp-samples" class="samples"></div>
+          </div>
+
+          <div class="fld">
+            <span>Listas guardadas neste computador</span>
+            <div id="imp-saved" class="samples"></div>
+          </div>
+
+          <div class="fld">
+            <span>Canais multicast UDP (239.x.x.x)</span>
+            <p class="tiny">Canais <code>udp://@239.1.1.1:1234</code> precisam do proxy local incluido.
+            Veja <code>docs/Windows7-Guia.md</code>, seccao <em>Proxy UDP</em>.</p>
+          </div>
+
+          <div id="imp-status" class="imp-status"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-settings" class="modal hidden">
+      <div class="modal-box">
+        <div class="modal-head">
+          <span>Definicoes</span>
+          <button type="button" class="btn btn-ghost" data-close="modal-settings">Fechar</button>
+        </div>
+        <div class="modal-body">
+          <h4>Desempenho (PC fraco)</h4>
+          <label class="chk"><input type="checkbox" id="set-lowend" /> Modo leve: menos buffer, menos efeitos, limite de 720p</label>
+          <label class="chk"><input type="checkbox" id="set-hwaccel" /> Pedir descodificacao por hardware ao sistema</label>
+          <label class="fld"><span>Buffer maximo (segundos)</span><input type="number" id="set-buffer" min="3" max="60" step="1" /></label>
+          <label class="fld"><span>Limite de debito (bits/s, 0 = automatico)</span><input type="number" id="set-bitrate" min="0" step="100000" /></label>
+          <label class="chk"><input type="checkbox" id="set-autonext" /> Passar automaticamente ao canal seguinte quando um falha</label>
+          <label class="fld"><span>Tentativas por canal</span><input type="number" id="set-retry" min="0" max="6" step="1" /></label>
+
+          <h4>Proxy UDP local (multicast)</h4>
+          <label class="fld"><span>Endereco do proxy (udpxy ou TVmakina Proxy)</span><input type="text" id="set-proxy" placeholder="127.0.0.1:4022" /></label>
+          <button type="button" id="set-proxy-test" class="btn">Testar proxy</button>
+          <span id="set-proxy-result" class="tiny"></span>
+
+          <h4>Aspecto</h4>
+          <label class="chk"><input type="checkbox" id="set-logos" /> Mostrar logotipos na lista (desligue para poupar memoria)</label>
+          <label class="fld"><span>Tema</span>
+            <select id="set-theme"><option value="escuro">Escuro</option><option value="alto-contraste">Alto contraste</option></select>
+          </label>
+          <label class="chk"><input type="checkbox" id="set-remember" /> Retomar o ultimo canal ao abrir</label>
+
+          <h4>Gravacao</h4>
+          <label class="fld"><span>Formato preferido</span>
+            <select id="set-recformat"><option value="webm">WebM</option><option value="mp4">MP4 (se suportado)</option></select>
+          </label>
+
+          <h4>Dados</h4>
+          <p class="tiny">Guarda: <span id="set-storage">--</span> · Motor: <span id="set-backend">--</span></p>
+          <button type="button" id="set-export" class="btn">Exportar favoritos e listas (JSON)</button>
+          <button type="button" id="set-reset" class="btn btn-danger">Apagar tudo</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-sleep" class="modal hidden">
+      <div class="modal-box modal-small">
+        <div class="modal-head">
+          <span>Temporizador de sono</span>
+          <button type="button" class="btn btn-ghost" data-close="modal-sleep">Fechar</button>
+        </div>
+        <div class="modal-body">
+          <p class="tiny">Ao fim do tempo escolhido o TVmakina para a reproducao e fecha o stream (poupa memoria e rede).</p>
+          <div class="row-btns">
+            <button type="button" class="btn sleep-opt" data-min="15">15 min</button>
+            <button type="button" class="btn sleep-opt" data-min="30">30 min</button>
+            <button type="button" class="btn sleep-opt" data-min="60">60 min</button>
+            <button type="button" class="btn sleep-opt" data-min="90">90 min</button>
+            <button type="button" class="btn sleep-opt" data-min="0">Desligar</button>
+          </div>
+          <p id="sleep-state" class="tiny"></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="toasts"></div>
+
+    <!-- Motor HLS: carregado antes da aplicacao; ES5, funciona em Chrome 49+/Firefox 52+/IE11 -->
+    <script src="vendor/hls.min.js"></script>
+    <script src="app/core.js"></script>
+    <script src="app/parser.js"></script>
+    <script src="app/store.js"></script>
+    <script src="app/net.js"></script>
+    <script src="app/lowend.js"></script>
+    <script src="app/player.js"></script>
+    <script src="app/ui.js"></script>
+    <script src="app/main.js"></script>
+  </body>
+</html>
