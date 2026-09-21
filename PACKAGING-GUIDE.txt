@@ -1,0 +1,23 @@
+SIGNAL TV - WINDOWS PACKAGING GUIDE
+
+PROJECT TYPE
+React + Vite + Electron.
+
+OPTION A - Electron packaging service
+1. Upload this complete project ZIP to a service that supports Electron projects.
+2. Use electron.cjs as the Electron main file.
+3. Use npm run build as the web build command.
+4. Use electron-builder as the packaging tool.
+5. Windows targets: NSIS installer and portable EXE.
+
+OPTION B - Build on a Windows computer
+1. Install Node.js LTS (only on the build computer).
+2. Open this folder in Command Prompt.
+3. Run: npm install
+4. Run: npm run dist:win
+5. Find the installer and portable EXE inside the release folder.
+
+IMPORTANT
+- The end user's computer does not need Node.js to run the generated EXE.
+- This package does not include TV channels or copyrighted streams. Add only playlists and streams you are authorized to use.
+- Electron applications may consume more RAM than a normal browser page. For weak PCs, prefer the portable build and close other programs.

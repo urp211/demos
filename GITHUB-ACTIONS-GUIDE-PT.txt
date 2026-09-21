@@ -1,0 +1,20 @@
+GUIA RAPIDO - GERAR SIGNAL TV EXE PELO GITHUB ACTIONS
+
+1. Entre em https://github.com e crie um repositorio vazio.
+2. Extraia este ZIP.
+3. Envie TODOS os ficheiros e pastas para o repositorio, incluindo:
+   .github/workflows/build-windows.yml
+4. No GitHub, abra o separador Actions.
+5. Selecione "Build Signal TV for Windows".
+6. Clique em "Run workflow" e depois confirme em "Run workflow".
+7. Aguarde a compilacao terminar.
+8. Abra a execucao concluida e procure a secao Artifacts.
+9. Baixe "signal-tv-windows-build.zip".
+10. Dentro dele encontrara os ficheiros .exe (instalador e/ou portatil).
+
+NOTAS:
+- O seu PC nao precisa de Node.js para esta compilacao.
+- A compilacao ocorre nos servidores do GitHub.
+- O repositorio deve conter package.json e package-lock.json.
+- O GitHub Actions tem limites no plano gratuito; para projetos publicos costuma ser mais flexivel.
+- Nao publique chaves privadas, senhas ou dados pessoais no repositorio.

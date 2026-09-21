@@ -1,0 +1,12 @@
+{
+  "name": "Signal TV",
+  "version": "1.0.0",
+  "platform": "windows",
+  "framework": "electron",
+  "main": "electron.cjs",
+  "webBuildCommand": "npm run build",
+  "packageCommand": "npm run dist:win",
+  "outputDirectory": "release",
+  "targets": ["nsis", "portable"],
+  "architecture": "x64"
+}
